@@ -3,26 +3,55 @@
   "version": "1.0.0",
   "description": "Scrape search, metadata, episodes, and streams from 9animetv.to",
   "domains": ["9animetv.to"],
-  
+
   "search": {
+    "type": "list",
     "url": "https://9animetv.to/search?keyword={query}",
     "list_selector": ".content .item",
-    "id_selector": "a[href]",
-    "id_pattern": "/watch/(.+)$",
-    "name_selector": ".name",
-    "url_selector": "a[href]",
-    "poster_selector": "img[src]"
+    "fields": {
+      "id": {
+        "selector": "a",
+        "attr": "href",
+        "regex": "/watch/(.+)$"
+      },
+      "name": {
+        "selector": ".name",
+        "text": true
+      },
+      "url": {
+        "selector": "a",
+        "attr": "href"
+      },
+      "poster": {
+        "selector": "img",
+        "attr": "src"
+      }
+    }
   },
 
   "details": {
+    "type": "detail",
     "url": "{id}",
-    "episodes_selector": ".episodes-list li a",
-    "episode_id_selector": "href",
-    "episode_name_selector": "text",
-    "episode_url_selector": "href"
+    "fields": {
+      "episodes": {
+        "list_selector": ".episodes-list li a",
+        "fields": {
+          "id": {
+            "attr": "href"
+          },
+          "name": {
+            "text": true
+          },
+          "url": {
+            "attr": "href"
+          }
+        }
+      }
+    }
   },
 
   "stream": {
+    "type": "stream",
     "url": "{url}",
     "script_contains": "sources",
     "source_pattern": "sources:\\s*(\\[[^\\]]+\\])",
