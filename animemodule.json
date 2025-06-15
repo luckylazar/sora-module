@@ -1,0 +1,35 @@
+{
+  "name": "9AnimeTV",
+  "version": "1.0.0",
+  "description": "Scrape search, metadata, episodes, and streams from 9animetv.to",
+  "domains": ["9animetv.to"],
+  
+  "search": {
+    "url": "https://9animetv.to/search?keyword={query}",
+    "list_selector": ".content .item",
+    "id_selector": "a[href]",
+    "id_pattern": "/watch/(.+)$",
+    "name_selector": ".name",
+    "url_selector": "a[href]",
+    "poster_selector": "img[src]"
+  },
+
+  "details": {
+    "url": "{id}",
+    "episodes_selector": ".episodes-list li a",
+    "episode_id_selector": "href",
+    "episode_name_selector": "text",
+    "episode_url_selector": "href"
+  },
+
+  "stream": {
+    "url": "{url}",
+    "script_contains": "sources",
+    "source_pattern": "sources:\\s*(\\[[^\\]]+\\])",
+    "source_type": "json",
+    "fields": {
+      "url": "file",
+      "quality": "label"
+    }
+  }
+}
